@@ -25,13 +25,21 @@
             </ListBox.Items>
         </ListBox>
 
-        <Border Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="round" Background="AliceBlue" CornerRadius="10">
+
+        <StackPanel Grid.Column="1" x:Name="zipCode" >
+            <TextBlock Text="Enter Zip Code:"/>
+            <TextBox x:Name="ZipCodeTextBox"/>
+            <Button Content="Submit" Click="SubmitButton_Click"/>
+        </StackPanel>
+        
+        
+        <Border  Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="rounded_border" CornerRadius="10">
             <StackPanel Margin ="10" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <!--Sun icons created by iconixar - Flaticon -->
                 <Image x:Name="weather_icon" Width="50" Height="50"/>
-                <TextBlock Text="Kansas City" FontSize="20" FontWeight="Bold" />
-                <TextBlock Text="Sunny" FontSize="16" HorizontalAlignment="Center"/>
-                <TextBlock Text="75" FontSize="16" HorizontalAlignment="Center" />
+                <TextBlock Name="CityTextBlock"  FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Name="ConditionTextBlock"  FontSize="16" HorizontalAlignment="Center"/>
+                <TextBlock Name="TempTextBlock" FontSize="16" HorizontalAlignment="Center" />
             </StackPanel>
         </Border>
     </Grid>
