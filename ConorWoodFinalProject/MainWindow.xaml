@@ -1,0 +1,40 @@
+﻿<Window x:Class="ConorWoodFinalProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ConorWoodFinalProject"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            
+            
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ListBox Name ="locations" VerticalAlignment="Stretch" Grid.Row="0" Grid.Column="0" SelectionChanged="ListBox_SelectionChanged" BorderBrush="White">
+            <ListBox.Items>
+                <ListBoxItem>Kansas City, Missouri</ListBoxItem>
+                <ListBoxItem>Columbia, Missouri </ListBoxItem>
+                <ListBoxItem>Item 3</ListBoxItem>
+            </ListBox.Items>
+        </ListBox>
+
+        <Border Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="round" Background="AliceBlue" CornerRadius="10">
+            <StackPanel Margin ="10" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!--Sun icons created by iconixar - Flaticon -->
+                <Image x:Name="weather_icon" Width="50" Height="50"/>
+                <TextBlock Text="Kansas City" FontSize="20" FontWeight="Bold" />
+                <TextBlock Text="Sunny" FontSize="16" HorizontalAlignment="Center"/>
+                <TextBlock Text="75" FontSize="16" HorizontalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
+    
+
