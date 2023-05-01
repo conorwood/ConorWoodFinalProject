@@ -15,9 +15,132 @@ namespace ConorWoodFinalProject
     internal class Weather
     {
         private RootObject? rootObject;
-        private string? cityName;
-        private string? weatherCondition;
-        private string? tempF;
+        protected string? cityName;
+        protected string? weatherCondition;
+        protected string? tempF;
+        protected HttpClient client;
+        protected string key;
+        protected BitmapImage bitmap;
+        private ForecastWeather forecast;
+
+        protected string zipCode;
+        protected string region;
+        protected string feelslike_temp;
+        protected string uv;
+        protected string wind;
+        protected int is_day;
+
+        public Weather() 
+        {
+            rootObject = new RootObject();
+            client = new();
+            key = "b06f9ec5e918401889a152444230604";
+        }
+
+        public int IsDay
+        {
+            get
+            {
+                return this.is_day;
+            }
+        }
+
+        public override string ToString()
+        {
+            return CityName;
+        }
+
+        public string UV
+        {
+            get 
+            {
+                return this.uv;
+            }
+        }
+
+        public string Wind
+        {
+            get
+            {
+                return this.wind;
+            }
+        }
+
+        public string Region
+        {
+            get
+            {
+                return this.region;
+            }
+
+        }
+
+        public string Feelslike_temp
+        {
+            get
+            {
+                return this.feelslike_temp;
+            }
+        }
+
+
+        public ForecastWeather Forecast
+        {
+            get
+            {
+                return this.forecast;
+            }
+
+            set
+            {
+                this.forecast = value;
+            }
+        }
+
+        public string ZipCode
+        {
+            get 
+            {
+                return this.zipCode;
+            }
+
+            set
+            {
+                this.zipCode = value;
+            }
+        }
+        public string CityName
+        {
+            get
+            {
+                return this.cityName;
+            }
+        }
+
+        public string WeatherCondition
+        {
+            get
+            {
+                return this.weatherCondition;
+            }
+        }
+
+        public string TempF
+        {
+            get 
+            {
+                return this.tempF;
+            }
+        }
+
+        public BitmapImage Bitmap
+        {
+            get 
+            {
+                return this.bitmap;
+            }
+        }
+        
 
         protected virtual BitmapImage LoadBitmap(String assetsRelativePath, double decodeWidth)
         {
@@ -32,26 +155,38 @@ namespace ConorWoodFinalProject
             return theBitmap;
         }
 
-        //private async void SubmitButton_Click(object sender, RoutedEventArgs e)
-        private async void getWeatherInfo(string zipCode)
+        protected BitmapImage LoadBitmapFromURl(String url) 
         {
-            //string zipCode = ZipCodeTextBox.Text;
-            HttpClient client = new();
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = new Uri("https:" + url, UriKind.Absolute);
+            bitmapImage.EndInit();
 
-            var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/current.json?key={key}&q={zipCode}");
-
-            RootObject? root = JsonSerializer.Deserialize<RootObject?>(json);
-
-            this.cityName = root?.location?.name;
-            this.weatherCondition = root?.location?.localtime; // for now
-            this.tempF = root?.current?.temp_f.ToString();
-
-
-            /*
-            ConditionTextBlock.Text = root?.location?.localtime;
-            TempTextBlock.Text = root?.current?.temp_f.ToString();
-            rounded_border.Background = Brushes.AliceBlue;
-            */
+            return bitmapImage;
         }
+
+        public virtual async Task getWeatherInfo(string zipCode)
+        {
+            
+            var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/current.json?key={this.key}&q={zipCode}");
+
+            rootObject = JsonSerializer.Deserialize<RootObject?>(json);
+
+            this.cityName = rootObject?.location?.name;
+            this.weatherCondition = rootObject?.current?.condition?.text; // for now
+            this.tempF = rootObject?.current?.temp_f.ToString();
+            this.region = rootObject?.location?.region;
+            this.feelslike_temp = rootObject?.current?.feelslike_f.ToString();
+            this.uv = rootObject?.current?.uv.ToString();
+            this.wind = rootObject?.current.wind_mph.ToString();
+            this.is_day = rootObject.current.is_day;
+
+            //this.bitmap = LoadBitmap("sun.png", 50.0);
+            this.bitmap = LoadBitmapFromURl(rootObject.current.condition.icon);
+
+        }
+
+
+
     }
 }

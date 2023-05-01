@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ConorWoodFinalProject
 {
@@ -35,6 +36,58 @@ namespace ConorWoodFinalProject
         public double feelslike_f { get; set; }
 
         public int is_day { get; set; }
+
+        public double uv { get; set; }
+
+        public double wind_mph { get; set; }
+
+        public Condition? condition { get; set; }
+    }
+
+    public class Condition
+    {
+        public Condition() { }
+
+        public string text { get; set; }
+        public string icon { get; set; }
+
+        public int code { get; set; }
+    }
+
+    public class ForeCastRoot
+    {
+        public Location? location { get; set; }
+        public Current? current { get; set; }
+
+        public Forecast? forecast { get; set; }
+    }
+
+    public class Forecast
+    {
+        public Forecast() { }
+
+        public List<ForecastDay> forecastday { get; set; }
+    }
+
+    public class ForecastDay
+    {
+        public ForecastDay() { }
+
+        public string date { get; set; }
+
+        public Day day { get; set; }
+
+    }
+
+    public class Day
+    {
+        public Day() { }
+
+        public double maxtemp_f { get; set; }
+
+        public double mintemp_f { get; set; }
+
+        public Condition condition { get; set; }
     }
 
 }
