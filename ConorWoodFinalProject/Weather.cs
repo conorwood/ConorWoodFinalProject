@@ -30,11 +30,14 @@ namespace ConorWoodFinalProject
         protected string wind;
         protected int is_day;
 
+        private AstronomyInfo astronomy;
+
         public Weather() 
         {
             rootObject = new RootObject();
             client = new();
             key = "b06f9ec5e918401889a152444230604";
+            astronomy= new AstronomyInfo();
         }
 
         public int IsDay
@@ -83,6 +86,13 @@ namespace ConorWoodFinalProject
             }
         }
 
+        public AstronomyInfo Astronomy
+        {
+            get
+            {
+                return this.astronomy;
+            }
+        }
 
         public ForecastWeather Forecast
         {

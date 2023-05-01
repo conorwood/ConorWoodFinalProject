@@ -67,6 +67,7 @@ namespace ConorWoodFinalProject
             await currentWeather.getWeatherInfo(newLocationTextBox.Text);
             // await forecastWeather.getWeatherInfo(newLocationTextBox.Text);
             await currentWeather.Forecast.getWeatherInfo(newLocationTextBox.Text);
+            await currentWeather.Astronomy.getAstroInfo(newLocationTextBox.Text);
             
 
             CityTextBlock.Text = $"{currentWeather.CityName}, {currentWeather.Region}";
@@ -94,6 +95,9 @@ namespace ConorWoodFinalProject
             windText.Text = $"Wind: {currentWeather.Wind} MPH";
             uvText.Text = $"UV Index: {currentWeather.UV}";
 
+            sunriseText.Text = $"Sunrise: {currentWeather.Astronomy.Sunrise}";
+            sunsetText.Text = $"Sunset: {currentWeather.Astronomy.Sunset}";
+            moonPhaseText.Text = $"Moon Phase: {currentWeather.Astronomy.MoonPhase}";
 
             setBackground(currentWeather);
 
@@ -148,6 +152,11 @@ namespace ConorWoodFinalProject
             feelslikeText.Text = $"Feels Like: {newWeather.Feelslike_temp} °F";
             windText.Text = $"Wind: {newWeather.Wind} MPH";
             uvText.Text = $"UV Index: {newWeather.UV}";
+
+
+            sunriseText.Text = $"Sunrise: {newWeather.Astronomy.Sunrise}";
+            sunsetText.Text = $"Sunset: {newWeather.Astronomy.Sunset}";
+            moonPhaseText.Text = $"Moon Phase: {newWeather.Astronomy.MoonPhase}";
 
             setBackground(newWeather);
 

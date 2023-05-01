@@ -89,6 +89,13 @@
                         <TextBlock FontSize="20" Foreground="White" Margin="10" Name="uvText" />
                         <TextBlock FontSize="20" Foreground="White" Margin="10" Name="windText"/>
                     </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="sunriseText" />
+                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="sunsetText" />
+                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="moonPhaseText"/>
+                    </StackPanel>
+                        
                 </StackPanel>
                 <!--</Border>-->
 
