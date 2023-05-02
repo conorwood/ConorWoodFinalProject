@@ -7,12 +7,14 @@ using System.Windows;
 
 namespace ConorWoodFinalProject
 {
+
+    [Serializable]
     public class RootObject
     {
         public Location? location { get; set; }
         public Current? current { get; set; }
     }
-
+    [Serializable]
     public class Location
     {
         public Location() { }
@@ -28,7 +30,7 @@ namespace ConorWoodFinalProject
         public string? localtime { get; set; }
 
     }
-
+    [Serializable]
     public class Current
     {
         public Current() { }
@@ -43,7 +45,7 @@ namespace ConorWoodFinalProject
 
         public Condition? condition { get; set; }
     }
-
+    [Serializable]
     public class Condition
     {
         public Condition() { }
@@ -53,7 +55,7 @@ namespace ConorWoodFinalProject
 
         public int code { get; set; }
     }
-
+    [Serializable]
     public class ForeCastRoot
     {
         public Location? location { get; set; }
@@ -61,14 +63,14 @@ namespace ConorWoodFinalProject
 
         public Forecast? forecast { get; set; }
     }
-
+    [Serializable]
     public class Forecast
     {
         public Forecast() { }
 
         public List<ForecastDay> forecastday { get; set; }
     }
-
+    [Serializable]
     public class ForecastDay
     {
         public ForecastDay() { }
@@ -78,7 +80,7 @@ namespace ConorWoodFinalProject
         public Day day { get; set; }
 
     }
-
+    [Serializable]
     public class Day
     {
         public Day() { }
@@ -90,7 +92,7 @@ namespace ConorWoodFinalProject
         public Condition condition { get; set; }
     }
 
-
+    [Serializable]
     class AstronomyResponse
     {
         public AstronomyResponse() { }
@@ -100,7 +102,7 @@ namespace ConorWoodFinalProject
         public Astronomy astronomy { get; set; }
     }
 
-
+    [Serializable]
     public class Astronomy
     {
         public Astronomy() { }
@@ -108,7 +110,7 @@ namespace ConorWoodFinalProject
         public Astro astro { get; set; }
 
     }
-
+    [Serializable]
     public class Astro
     {
         public string sunrise { get; set; }

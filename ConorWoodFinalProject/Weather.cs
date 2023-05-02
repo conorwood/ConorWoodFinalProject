@@ -9,17 +9,23 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace ConorWoodFinalProject
 {
+    [Serializable]
     public class Weather
     {
         private RootObject? rootObject;
         protected string? cityName;
         protected string? weatherCondition;
         protected string? tempF;
+
+        [NonSerialized]
         protected HttpClient client;
         protected string key;
+
+        [NonSerialized]
         protected BitmapImage bitmap;
         private ForecastWeather forecast;
 
@@ -35,7 +41,6 @@ namespace ConorWoodFinalProject
         public Weather() 
         {
             rootObject = new RootObject();
-            client = new();
             key = "b06f9ec5e918401889a152444230604";
             astronomy= new AstronomyInfo();
         }
@@ -177,13 +182,13 @@ namespace ConorWoodFinalProject
 
         public virtual async Task getWeatherInfo(string zipCode)
         {
-            
+            client = new();
             var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/current.json?key={this.key}&q={zipCode}");
 
             rootObject = JsonSerializer.Deserialize<RootObject?>(json);
 
             this.cityName = rootObject?.location?.name;
-            this.weatherCondition = rootObject?.current?.condition?.text; // for now
+            this.weatherCondition = rootObject?.current?.condition?.text;
             this.tempF = rootObject?.current?.temp_f.ToString();
             this.region = rootObject?.location?.region;
             this.feelslike_temp = rootObject?.current?.feelslike_f.ToString();
@@ -191,7 +196,6 @@ namespace ConorWoodFinalProject
             this.wind = rootObject?.current.wind_mph.ToString();
             this.is_day = rootObject.current.is_day;
 
-            //this.bitmap = LoadBitmap("sun.png", 50.0);
             this.bitmap = LoadBitmapFromURl(rootObject.current.condition.icon);
 
         }

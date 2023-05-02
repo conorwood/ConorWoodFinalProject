@@ -10,12 +10,14 @@ using System.Windows.Media.Imaging;
 
 namespace ConorWoodFinalProject
 {
+    [Serializable]
     public class ForecastWeather : Weather 
     {
         private ForeCastRoot? forecastRoot;
         private string date;
         private List<ForecastDay> days;
 
+        [NonSerialized]
         List<BitmapImage> icons;
 
         public ForecastWeather() : base()
@@ -46,6 +48,7 @@ namespace ConorWoodFinalProject
 
         public override async Task getWeatherInfo(string zipCode)
         {
+            this.client = new();
             var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/forecast.json?key={this.key}&q={zipCode}&days=3");
 
             forecastRoot = JsonSerializer.Deserialize<ForeCastRoot?>(json);
@@ -63,12 +66,7 @@ namespace ConorWoodFinalProject
 
 
 
-            ////this.cityName = rootObject?.location?.name;
-            //this.weatherCondition = rootObject?.current?.condition?.text; // for now
-            //this.tempF = rootObject?.current?.temp_f.ToString();
-
-            ////this.bitmap = LoadBitmap("sun.png", 50.0);
-            //this.bitmap = LoadBitmapFromURl(rootObject.current.condition.icon);
+            
         }
 
 

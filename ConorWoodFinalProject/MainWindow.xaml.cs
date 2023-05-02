@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -25,45 +27,97 @@ namespace ConorWoodFinalProject
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
         Weather weather;
-        //ForecastWeather forecastWeather;
-        //List<Weather> favorites = new List<Weather>();
-
-        public ObservableCollection<Weather> favorites { get; set; }
+        Controller myController;
+       
 
         public MainWindow()
         {
             InitializeComponent();
-            favorites = new ObservableCollection<Weather>();
-            DataContext = this;
-            //currentWeather = new Weather(); 
-            //forecastWeather = new ForecastWeather();
-            //currentWeather.Forecast = forecastWeather;
+            myController = new Controller();
+            weather = new Weather();
+            DataContext = this.myController;
+
+           
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (locations.SelectedIndex== 0) 
-            //{
-            //    return;
-            //}
+
             Weather selectedWeather = (Weather)locations.SelectedItem;
-            updateCurrnetWeather(selectedWeather);
-            //MessageBox.Show($"{selectedWeather.CityName}\n{selectedWeather.TempF}\n{selectedWeather.WeatherCondition}");
-            //currentWeather = (Weather)locations.SelectedItem;
-            //MessageBox.Show(currentWeather.CityName);
+            if (selectedWeather != null)
+            {
+                updateWeatherDisplay(selectedWeather.CityName + " " + selectedWeather.Region);
+            }
         }
 
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
+        { 
+            updateWeatherDisplay(newLocationTextBox.Text); 
+        }
+
+        private void newLocationButton_Click(object sender, RoutedEventArgs e)
         {
+            NewLocationBox.Visibility = Visibility.Visible;
+        }
 
-            //Weather currentWeather = new Weather();
+        private void addLocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            SubmitButton_Click(sender, e);
+        }
 
-            //await currentWeather.getWeatherInfo(ZipCodeTextBox.Text);
-            //await forecastWeather.getWeatherInfo(ZipCodeTextBox.Text);
+        
+        
 
+
+        private void setBackground(Weather w)
+        {
+            var gradientBrush = new LinearGradientBrush();
+            gradientBrush.StartPoint = new Point(0, 0);
+            gradientBrush.EndPoint = new Point(0, 1);
+
+            if (w.IsDay == 0)
+            {
+                gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(44, 44, 68), 0));
+                gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(128, 128, 128), 1));
+            }
+
+            else
+            {
+                gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(49, 113, 175), 0));
+                gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(128, 128, 128), 1));
+            }
+
+            grid.Background = gradientBrush;
+
+            
+        }
+
+        private void addToFavoritesButton_Click(object sender, RoutedEventArgs e)
+        {
+            myController.AddWeather(weather);
+
+            locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites") { Source = myController });
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            myController.SerializeData();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            myController.DeserializeData();
+            locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites") { Source = myController });
+        }
+
+
+        private async void updateWeatherDisplay(string location)
+        {
             Weather currentWeather = new Weather();
             ForecastWeather forecastWeather = new ForecastWeather();
             currentWeather.Forecast = forecastWeather;
@@ -72,10 +126,9 @@ namespace ConorWoodFinalProject
 
             try
             {
-                await currentWeather.getWeatherInfo(newLocationTextBox.Text);
-                // await forecastWeather.getWeatherInfo(newLocationTextBox.Text);
-                await currentWeather.Forecast.getWeatherInfo(newLocationTextBox.Text);
-                await currentWeather.Astronomy.getAstroInfo(newLocationTextBox.Text);
+                await currentWeather.getWeatherInfo(location);
+                await currentWeather.Forecast.getWeatherInfo(location);
+                await currentWeather.Astronomy.getAstroInfo(location);
             }
 
             catch (HttpRequestException ex)
@@ -122,111 +175,14 @@ namespace ConorWoodFinalProject
             NewLocationBox.Visibility = Visibility.Collapsed;
         }
 
-        private void newLocationButton_Click(object sender, RoutedEventArgs e)
+        private void deleteLocationButton_Click(object sender, RoutedEventArgs e)
         {
-            NewLocationBox.Visibility = Visibility.Visible;
+            Weather selectedWeather = (Weather)locations.SelectedItem;
+            myController.DeleteWeather(selectedWeather);
+            
         }
 
-        private void addLocationButton_Click(object sender, RoutedEventArgs e)
-        {
-            //MessageBox.Show(newLocationTextBox.Text);
-            SubmitButton_Click(sender, e);
-        }
-
-        
-        private async void updateCurrnetWeather(Weather newWeather)
-        {
-            //await newWeather.getWeatherInfo(newLocationTextBox.Text);
-
-            try
-            {
-                await newWeather.getWeatherInfo(newWeather.ZipCode);
-                await newWeather.Forecast.getWeatherInfo(newWeather.ZipCode);
-                await newWeather.Astronomy.getAstroInfo(newWeather.ZipCode);
-            }
-
-            catch (HttpRequestException ex)
-            {
-                MessageBox.Show("Error Retrieving Data.\n" + ex.Message);
-                return;
-            }
-            // await forecastWeather.getWeatherInfo(newLocationTextBox.Text);
-            //await newWeather.Forecast.getWeatherInfo(newLocationTextBox.Text);
-
-
-            CityTextBlock.Text = $"{newWeather.CityName}, {newWeather.Region}";
-            ConditionTextBlock.Text = newWeather.WeatherCondition;
-            TempTextBlock.Text = $"{newWeather.TempF} °F";
-            //rounded_border.Background = Brushes.DarkGray;
-            weather_icon.Source = newWeather.Bitmap;
-
-
-            Day1Text.Text = $"{newWeather.Forecast.Days[0].day.maxtemp_f} °F";
-            Day2Text.Text = $"{newWeather.Forecast.Days[1].day.maxtemp_f} °F";
-            Day3Text.Text = $"{newWeather.Forecast.Days[2].day.maxtemp_f} °F";
-
-
-            Day1Icon.Source = newWeather.Forecast.Icons[0];
-            Day2Icon.Source = newWeather.Forecast.Icons[1];
-            Day3Icon.Source = newWeather.Forecast.Icons[2];
-
-            Date1.Text = newWeather.Forecast.formattedDate(newWeather.Forecast.Days[0]);
-            Date2.Text = newWeather.Forecast.formattedDate(newWeather.Forecast.Days[1]);
-            Date3.Text = newWeather.Forecast.formattedDate(newWeather.Forecast.Days[2]);
-
-            feelslikeText.Text = $"Feels Like: {newWeather.Feelslike_temp} °F";
-            windText.Text = $"Wind: {newWeather.Wind} MPH";
-            uvText.Text = $"UV Index: {newWeather.UV}";
-
-
-            sunriseText.Text = $"Sunrise: {newWeather.Astronomy.Sunrise}";
-            sunsetText.Text = $"Sunset: {newWeather.Astronomy.Sunset}";
-            moonPhaseText.Text = $"Moon Phase: {newWeather.Astronomy.MoonPhase}";
-
-            setBackground(newWeather);
-
-            ForecastBorder.Visibility = Visibility.Visible;
-            newLocationTextBox.Text = " ";
-            NewLocationBox.Visibility = Visibility.Collapsed;
-        }
-
-
-        private void setBackground(Weather w)
-        {
-            if (w.IsDay == 0)
-            {
-                grid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2c2c44"));
-            }
-
-            else
-            {
-                grid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3171af"));
-            }
-        }
-
-        private void addToFavoritesButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            //favorites.Add(weather);
-            //locations.Items.Add(weather);
-
-            favorites.Add(weather);
-            favorites = new ObservableCollection<Weather>(favorites.OrderBy(x => x.CityName));
-
-            locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites"));
-        }
-
-
-
-
-        //private void addStudent(Person student)
-        //{
-        //    student.FirstName = FirstNameTextBox.Text;
-        //    student.LastName = LastNameTextBox.Text;
-        //    student.ID = int.Parse(StudentIDTextBox.Text);
-        //    student.Age = int.Parse(AgeTextBox.Text);
-        //    student.Gender = getGender();
-        //}
+         
 
     }
 }

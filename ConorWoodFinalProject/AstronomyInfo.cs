@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace ConorWoodFinalProject
 {
-
+    [Serializable]
     public class AstronomyInfo
     {
 
         private string key;
         private AstronomyResponse astronomyResponse;
+        [NonSerialized]
         HttpClient client;
         private string sunrise;
         private string sunset;
