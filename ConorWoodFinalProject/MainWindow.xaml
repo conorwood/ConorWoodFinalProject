@@ -7,23 +7,197 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-    <Grid Name="grid" Background="#3171af" Visibility="Visible">
+    <!--Background="#3171af"-->
+    <!--<ScrollViewer>-->
+            <Grid Name="grid" Visibility="Visible">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <!--<GradientStop Offset="0" Color="#3171af"/>-->
+                <GradientStop Offset="0" Color="#2c2c44"/>
+                <GradientStop Offset="1" Color="Gray"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
 
-        </Grid.RowDefinitions>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+                </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <!-- Locations -->
-            <ListBox Background ="#afafaf" Name ="locations" VerticalAlignment="Stretch" Grid.Row="0" Grid.Column="0" SelectionChanged="ListBox_SelectionChanged" Height="350" >
-                <ListBox.Items>
+
+            <!--<StackPanel VerticalAlignment="Stretch" Grid.Column="0">
+                <Button Name="newLocationButton" BorderBrush="White" Content=" + Add Location " Foreground="Black" Background="White" FontWeight="Bold" Click="newLocationButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderThickness="1" BorderBrush="White" Background="White">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+
+                <StackPanel Visibility="Collapsed" Name="NewLocationBox" Margin="10">
+                    <TextBlock> Enter Location Name:</TextBlock>
+                    <TextBox Margin="5" Name="newLocationTextBox"></TextBox>
+                    <Button Name="addLocationButton" Foreground="White" Background="Gray" FontWeight="Bold" HorizontalAlignment="Center" Click="addLocationButton_Click">Submit</Button>
+                </StackPanel>
+
+                --><!-- Locations --><!--
+                <ListBox Background ="#afafaf" Name ="locations" VerticalAlignment="Stretch" SelectionChanged="ListBox_SelectionChanged" ItemsSource="{Binding favorites}" ></ListBox>
+            </StackPanel>-->
+
+            <DockPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" LastChildFill="False">
+                <Button DockPanel.Dock="Top" Name="newLocationButton" BorderBrush="White" Content=" + Add Location " Foreground="Black" Background="White" FontWeight="Bold" Click="newLocationButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5" BorderThickness="1" BorderBrush="White" Background="White">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+
+                <StackPanel DockPanel.Dock="Top" Visibility="Collapsed" Name="NewLocationBox" Margin="00">
+                    <TextBlock Foreground="White"> Enter Location Name:</TextBlock>
+                    <TextBox Margin="5" Name="newLocationTextBox"></TextBox>
+                    <Button Name="addLocationButton" Foreground="White" Background="Gray" FontWeight="Bold" HorizontalAlignment="Center" Click="addLocationButton_Click">Submit</Button>
+                </StackPanel>
+
+
+                <!-- Locations -->
+                <ListBox Foreground="Black" FontWeight="Bold" Background ="#f7f7f8" Name ="locations" VerticalAlignment="Stretch" SelectionChanged="ListBox_SelectionChanged" ItemsSource="{Binding favorites}" Width="125" ></ListBox>
+
+            </DockPanel>
+
+
+
+        <Button Name="addToFavoritesButton" Grid.Column="1" FontWeight="Bold" Content="Add to Favorites" VerticalAlignment="Top" HorizontalAlignment="Left" Click="addToFavoritesButton_Click" Margin="5">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="5" BorderThickness="1" Padding="5" BorderBrush="Yellow" Background="Yellow">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Viewbox Grid.Row="0" Grid.Column="1" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                    <!-- Current Weather Panel -->
+                <StackPanel>
+                    <!--<Border Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="rounded_border" CornerRadius="10" Margin="0,0,0,25">--> 
+                    
+                    
+                    <StackPanel>
+                        <TextBlock Name="CityTextBlock" FontFamily="Roboto" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" FontSize="25"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image x:Name="weather_icon" Width="50" Height="50"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Name="ConditionTextBlock"  Foreground="White" HorizontalAlignment="Center"/>
+                            <TextBlock Name="TempTextBlock" Foreground="White" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                        
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Foreground="White" Margin="10" Name="feelslikeText" FontSize="12"/>
+                            <TextBlock Foreground="White" Margin="10" Name="uvText" FontSize="12"/>
+                            <TextBlock Foreground="White" Margin="10" Name="windText" FontSize="12"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <TextBlock Foreground="White" Margin="10" Name="sunriseText" FontSize="10"/>
+                            <TextBlock Foreground="White" Margin="10" Name="sunsetText" FontSize="10"/>
+                            <TextBlock Foreground="White" Margin="10" Name="moonPhaseText" FontSize="10"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <!--</Border>-->
+
+
+                    <!-- Forecast Panel -->
+                    <!--Visibility = "Collapsed" -->
+                    <!--Height="150" Width="300"-->
+                    <Border Visibility="Collapsed" Name="ForecastBorder"  CornerRadius="5" Background="Transparent">
+
+                        <WrapPanel Name="Forecast" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20,0,20,0">
+                            <StackPanel Margin="2">
+                                <TextBlock Name="Date1" Foreground="White" Text="Day 1" Margin="0,2,0,2"  HorizontalAlignment="Center"/>
+                                <Border BorderThickness="1" CornerRadius="5" Background="White">
+                                    <StackPanel Name="Day1" Orientation="Vertical">
+                                    <Image Name="Day1Icon" Width="30" Height="30" />
+                                    <TextBlock Name="Day1Text" Text="Text1" Padding="2" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+
+                        <StackPanel  Margin="2">
+                        <TextBlock Name="Date2" Foreground="White"  Margin="0,2,0,2" Text="Day 2" HorizontalAlignment="Center"/>
+                                <Border BorderThickness="1" CornerRadius="5" Background="White">
+                                    <StackPanel Name="Day2" Orientation="Vertical">
+                                    <Image Name="Day2Icon" Width="30" Height="30" />
+                                    <TextBlock Name="Day2Text" Text="Text2" Padding="2" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                        <StackPanel Margin="2">
+                        <TextBlock Name="Date3" Foreground="White"  Margin="0,2,0,2" Text="Day 3" HorizontalAlignment="Center"/>
+                                <Border BorderThickness="1" CornerRadius="5" Background="White" >
+                                    <StackPanel Name="Day3" Orientation="Vertical">
+                                        <Image Name="Day3Icon" Width="30" Height="30" />
+                                        <TextBlock Name="Day3Text" Text="Text2" Padding="2" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </WrapPanel>
+                    </Border>
+                    
+                    
+                    
+                    
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+    <!--</ScrollViewer>-->
+    
+    
+    
+    <!--<ScrollViewer>
+        <Grid Name="grid" Background="#3171af" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="0" Grid.Column="0">
+                <StackPanel>
+                    <Button Name="newLocationButton" BorderBrush="White" Content=" + Add Location " Foreground="Black" Background="White" FontWeight="Bold" Click="newLocationButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="5" BorderThickness="1" BorderBrush="White" Background="White">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+
+                    </Button>
+
+                    --><!-- Locations --><!--
+                    <ListBox Background ="#afafaf" Name ="locations" VerticalAlignment="Stretch" Grid.Row="0" Grid.Column="0" SelectionChanged="ListBox_SelectionChanged" Height="350" ItemsSource="{Binding favorites}" >
+                        --><!--<ListBox.Items>
+                    
                     <ListBoxItem>
                         <Button Name="newLocationButton" BorderBrush="White" Content=" + Add Location " Foreground="Black" Background="White" FontWeight="Bold" Click="newLocationButton_Click">
                             <Button.Template>
@@ -36,114 +210,115 @@
 
                         </Button>
                     </ListBoxItem>
-                </ListBox.Items>
-            </ListBox>
-        </Border>
+                </ListBox.Items>--><!--
+                    </ListBox>
+                </StackPanel>
+            </Border>
 
 
-        <Border Grid.Row="1" Grid.Column="0">
-            <!-- Add New Location -->
-            <StackPanel Visibility="Collapsed" Name="NewLocationBox" Margin="10" Grid.Row="1" Grid.Column="0">
-                <TextBlock> Enter Location Name:</TextBlock>
-                <TextBox Margin="5" Name="newLocationTextBox" Grid.Row="1"></TextBox>
-                <Button Name="addLocationButton" Foreground="White" Background="Gray" FontWeight="Bold" HorizontalAlignment="Center" Click="addLocationButton_Click">Submit</Button>
+            <Border Grid.Row="1" Grid.Column="0">
+                --><!-- Add New Location --><!--
+                <StackPanel Visibility="Collapsed" Name="NewLocationBox" Margin="10" Grid.Row="1" Grid.Column="0">
+                    <TextBlock> Enter Location Name:</TextBlock>
+                    <TextBox Margin="5" Name="newLocationTextBox" Grid.Row="1"></TextBox>
+                    <Button Name="addLocationButton" Foreground="White" Background="Gray" FontWeight="Bold" HorizontalAlignment="Center" Click="addLocationButton_Click">Submit</Button>
 
-            </StackPanel>
+                </StackPanel>
 
-        </Border>
+            </Border>
 
-        <!-- Zip Code Text Box -->
-        <!--
+            --><!-- Zip Code Text Box -->
+            <!--
         <StackPanel Grid.Row="0"  Grid.Column="1" x:Name="zipCode" >
             <TextBlock Text="Enter Zip Code:"/>
             <TextBox x:Name="ZipCodeTextBox"/>
             <Button Content="Submit" Click="SubmitButton_Click"/>
         </StackPanel>
-        -->
+        --><!--
 
-        <Button Margin ="10" Grid.Row="0" Grid.Column="1" Name="addToFavoritesButton" Content="Add to Favorites" VerticalAlignment="Top" HorizontalAlignment="Left" Click="addToFavoritesButton_Click">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="5" BorderThickness="1" BorderBrush="Yellow" Background="Yellow">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+            <Button Margin ="10" Grid.Row="0" Grid.Column="1" Name="addToFavoritesButton" Content="Add to Favorites" VerticalAlignment="Top" HorizontalAlignment="Left" Click="addToFavoritesButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" BorderThickness="1" BorderBrush="Yellow" Background="Yellow">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
-        <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
-            
+            <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
 
-            <!-- Current Weather Panel -->
-            <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="30">
-                <!--<Border Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="rounded_border" CornerRadius="10" Margin="0,0,0,25"> -->
+
+                --><!-- Current Weather Panel --><!--
+                <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="30">
+                    --><!--<Border Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="rounded_border" CornerRadius="10" Margin="0,0,0,25"> --><!--
                     <StackPanel Margin ="10" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Name="CityTextBlock" FontFamily="Roboto" Foreground="White" FontSize="50" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Name="CityTextBlock" FontFamily="Roboto" Foreground="White" FontSize="50" FontWeight="Bold" HorizontalAlignment="Center"/>
 
-                    <Image x:Name="weather_icon" Width="150" Height="150"/>
-                     
-                    <TextBlock Name="ConditionTextBlock"  Foreground="White" FontSize="30" HorizontalAlignment="Center"/>
-                    <TextBlock Name="TempTextBlock" Foreground="White" FontSize="30" HorizontalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="feelslikeText" />
-                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="uvText" />
-                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="windText"/>
-                    </StackPanel>
+                        <Image x:Name="weather_icon" Width="150" Height="150"/>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="sunriseText" />
-                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="sunsetText" />
-                        <TextBlock FontSize="20" Foreground="White" Margin="10" Name="moonPhaseText"/>
+                        <TextBlock Name="ConditionTextBlock"  Foreground="White" FontSize="30" HorizontalAlignment="Center"/>
+                        <TextBlock Name="TempTextBlock" Foreground="White" FontSize="30" HorizontalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock FontSize="20" Foreground="White" Margin="10" Name="feelslikeText" />
+                            <TextBlock FontSize="20" Foreground="White" Margin="10" Name="uvText" />
+                            <TextBlock FontSize="20" Foreground="White" Margin="10" Name="windText"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock FontSize="20" Foreground="White" Margin="10" Name="sunriseText" />
+                            <TextBlock FontSize="20" Foreground="White" Margin="10" Name="sunsetText" />
+                            <TextBlock FontSize="20" Foreground="White" Margin="10" Name="moonPhaseText"/>
+                        </StackPanel>
+
                     </StackPanel>
-                        
+                    --><!--</Border>-->
+
+
+                    <!-- Forecast Panel -->
+                    <!--Visibility = "Collapsed" -->
+                    <!--Height="150" Width="300"--><!--
+                    <Border Visibility="Collapsed" Name="ForecastBorder"  CornerRadius="5" Background="LightBlue" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Bottom" Margin="10">
+
+                        <WrapPanel Name="Forecast" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" >
+                            <StackPanel Margin="10">
+                                <TextBlock Name="Date1" FontWeight="Bold" Text="Day 1" HorizontalAlignment="Center" FontSize="20"/>
+                                <Border BorderThickness="1" CornerRadius="5" Background="White" Margin="5">
+                                    <StackPanel Name="Day1" Orientation="Vertical">
+                                        <Image Name="Day1Icon" Width="100" Height="100" />
+                                        <TextBlock Name="Day1Text" Text="Text1" HorizontalAlignment="Center" FontSize="20"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+
+                            <StackPanel Margin="10">
+                                <TextBlock Name="Date2" FontWeight="Bold" Text="Day 2" HorizontalAlignment="Center" FontSize="20"/>
+                                <Border BorderThickness="1" CornerRadius="5" Background="White" Margin="5">
+                                    <StackPanel Name="Day2" Orientation="Vertical">
+                                        <Image Name="Day2Icon" Width="100" Height="100" />
+                                        <TextBlock Name="Day2Text" Text="Text2" HorizontalAlignment="Center" FontSize="20"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Margin="10">
+                                <TextBlock Name="Date3" FontWeight="Bold" Text="Day 3" HorizontalAlignment="Center" FontSize="20"/>
+                                <Border BorderThickness="1" CornerRadius="5" Background="White" Margin="5">
+                                    <StackPanel Name="Day3" Orientation="Vertical">
+                                        <Image Name="Day3Icon" Width="100" Height="100" />
+                                        <TextBlock Name="Day3Text" Text="Text2" HorizontalAlignment="Center" FontSize="20"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            --><!-- Add more borders for additional items --><!--
+                        </WrapPanel>
+                    </Border>
                 </StackPanel>
-                <!--</Border>-->
 
+            </Border>
 
-                <!-- Forecast Panel -->
-                <!--Visibility = "Collapsed" -->
-                <!--Height="150" Width="300"-->
-                <Border Visibility="Collapsed" Name="ForecastBorder"  CornerRadius="5" Background="LightBlue" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Bottom" Margin="10">
-
-                    <WrapPanel Name="Forecast" Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" >
-                        <StackPanel Margin="10">
-                            <TextBlock Name="Date1" FontWeight="Bold" Text="Day 1" HorizontalAlignment="Center" FontSize="20"/>
-                            <Border BorderThickness="1" CornerRadius="5" Background="White" Margin="5">
-                                <StackPanel Name="Day1" Orientation="Vertical">
-                                    <Image Name="Day1Icon" Width="100" Height="100" />
-                                    <TextBlock Name="Day1Text" Text="Text1" HorizontalAlignment="Center" FontSize="20"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-
-
-                        <StackPanel Margin="10">
-                            <TextBlock Name="Date2" FontWeight="Bold" Text="Day 2" HorizontalAlignment="Center" FontSize="20"/>
-                            <Border BorderThickness="1" CornerRadius="5" Background="White" Margin="5">
-                                <StackPanel Name="Day2" Orientation="Vertical">
-                                    <Image Name="Day2Icon" Width="100" Height="100" />
-                                    <TextBlock Name="Day2Text" Text="Text2" HorizontalAlignment="Center" FontSize="20"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-
-                        <StackPanel Margin="10">
-                            <TextBlock Name="Date3" FontWeight="Bold" Text="Day 3" HorizontalAlignment="Center" FontSize="20"/>
-                            <Border BorderThickness="1" CornerRadius="5" Background="White" Margin="5">
-                                <StackPanel Name="Day3" Orientation="Vertical">
-                                    <Image Name="Day3Icon" Width="100" Height="100" />
-                                    <TextBlock Name="Day3Text" Text="Text2" HorizontalAlignment="Center" FontSize="20"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                        <!-- Add more borders for additional items -->
-                    </WrapPanel>
-                </Border>
-            </StackPanel>
-
-        </Border>
-
-        <!--<Border Grid.Column="1" Grid.Row="1"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20" CornerRadius="10" Background="White">
+            --><!--<Border Grid.Column="1" Grid.Row="1"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20" CornerRadius="10" Background="White">
             <StackPanel Margin="15" Orientation="Horizontal">
                 <TextBlock Height="50" Width="50" Text="Day 1" TextAlignment="Center" Margin="0,0,10,0" />
                 <TextBlock Height="50" Width="50" Text="Day 2" TextAlignment="Center"  Margin="0,0,10,0"/>
@@ -151,10 +326,11 @@
                 <TextBlock Height="50" Width="50" Text="Day 4" TextAlignment="Center" Margin="0,0,10,0" />
                 <TextBlock Height="50" Width="50" Text="Day 5" TextAlignment="Center" Margin="0,0,10,0"/>
             </StackPanel>
-        </Border> -->
-        
-        
-    </Grid>
+        </Border> --><!--
+
+
+        </Grid>
+    </ScrollViewer>-->
 </Window>
     
 

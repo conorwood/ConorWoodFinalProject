@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -16,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace ConorWoodFinalProject
 {
@@ -26,22 +29,26 @@ namespace ConorWoodFinalProject
     {
         Weather weather;
         //ForecastWeather forecastWeather;
-        List<Weather> favorites = new List<Weather>();
+        //List<Weather> favorites = new List<Weather>();
+
+        public ObservableCollection<Weather> favorites { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            //currentWeather = new Weather();
+            favorites = new ObservableCollection<Weather>();
+            DataContext = this;
+            //currentWeather = new Weather(); 
             //forecastWeather = new ForecastWeather();
             //currentWeather.Forecast = forecastWeather;
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (locations.SelectedIndex== 0) 
-            {
-                return;
-            }
+            //if (locations.SelectedIndex== 0) 
+            //{
+            //    return;
+            //}
             Weather selectedWeather = (Weather)locations.SelectedItem;
             updateCurrnetWeather(selectedWeather);
             //MessageBox.Show($"{selectedWeather.CityName}\n{selectedWeather.TempF}\n{selectedWeather.WeatherCondition}");
@@ -63,12 +70,20 @@ namespace ConorWoodFinalProject
             weather = currentWeather;
             weather.ZipCode = newLocationTextBox.Text;
 
+            try
+            {
+                await currentWeather.getWeatherInfo(newLocationTextBox.Text);
+                // await forecastWeather.getWeatherInfo(newLocationTextBox.Text);
+                await currentWeather.Forecast.getWeatherInfo(newLocationTextBox.Text);
+                await currentWeather.Astronomy.getAstroInfo(newLocationTextBox.Text);
+            }
 
-            await currentWeather.getWeatherInfo(newLocationTextBox.Text);
-            // await forecastWeather.getWeatherInfo(newLocationTextBox.Text);
-            await currentWeather.Forecast.getWeatherInfo(newLocationTextBox.Text);
-            await currentWeather.Astronomy.getAstroInfo(newLocationTextBox.Text);
-            
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show("Error Retrieving Data.\n" + ex.Message);
+                return;
+            }
+
 
             CityTextBlock.Text = $"{currentWeather.CityName}, {currentWeather.Region}";
             ConditionTextBlock.Text = currentWeather.WeatherCondition;
@@ -123,8 +138,18 @@ namespace ConorWoodFinalProject
         {
             //await newWeather.getWeatherInfo(newLocationTextBox.Text);
 
-            await newWeather.getWeatherInfo(newWeather.ZipCode);
-            await newWeather.Forecast.getWeatherInfo(newWeather.ZipCode);
+            try
+            {
+                await newWeather.getWeatherInfo(newWeather.ZipCode);
+                await newWeather.Forecast.getWeatherInfo(newWeather.ZipCode);
+                await newWeather.Astronomy.getAstroInfo(newWeather.ZipCode);
+            }
+
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show("Error Retrieving Data.\n" + ex.Message);
+                return;
+            }
             // await forecastWeather.getWeatherInfo(newLocationTextBox.Text);
             //await newWeather.Forecast.getWeatherInfo(newLocationTextBox.Text);
 
@@ -181,31 +206,17 @@ namespace ConorWoodFinalProject
 
         private void addToFavoritesButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
+            //favorites.Add(weather);
+            //locations.Items.Add(weather);
+
             favorites.Add(weather);
-            locations.Items.Add(weather);
-            //locations.Items.Clear();
+            favorites = new ObservableCollection<Weather>(favorites.OrderBy(x => x.CityName));
 
-            //foreach (var v in favorites)
-            //{
-            //    locations.Items.Add(v);
-            //}
-            
-
-            
-            //locations.Items.Add(currentWeather);
-            //students.Add(student);
-            //List<Person> displayList = students.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
-
-            //StudentsListBox.Items.Clear();
-
-            //foreach (var s in displayList)
-            //{
-            //    StudentsListBox.Items.Add(s);
-            //}
+            locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites"));
         }
 
-        
+
 
 
         //private void addStudent(Person student)

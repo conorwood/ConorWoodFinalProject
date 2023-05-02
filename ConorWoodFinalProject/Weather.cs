@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace ConorWoodFinalProject
 {
-    internal class Weather
+    public class Weather
     {
         private RootObject? rootObject;
         protected string? cityName;

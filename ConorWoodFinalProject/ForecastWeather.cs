@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace ConorWoodFinalProject
 {
-    internal class ForecastWeather : Weather 
+    public class ForecastWeather : Weather 
     {
         private ForeCastRoot? forecastRoot;
         private string date;
