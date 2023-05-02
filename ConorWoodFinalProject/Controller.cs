@@ -14,10 +14,22 @@ namespace ConorWoodFinalProject
     class Controller
     {
         public ObservableCollection<Weather> favorites { get; set; }
+        private Weather weather;
 
         public Controller()
         {
             favorites = new ObservableCollection<Weather>();
+            weather = new Weather();
+        }
+
+        public Weather Weather
+        {
+            get
+            {
+                return weather;
+            }
+
+            set { weather = value; }
         }
 
 

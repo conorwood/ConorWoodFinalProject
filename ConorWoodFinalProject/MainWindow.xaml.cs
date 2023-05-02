@@ -31,7 +31,6 @@ namespace ConorWoodFinalProject
 
     public partial class MainWindow : Window
     {
-        Weather weather;
         Controller myController;
        
 
@@ -39,7 +38,6 @@ namespace ConorWoodFinalProject
         {
             InitializeComponent();
             myController = new Controller();
-            weather = new Weather();
             DataContext = this.myController;
 
            
@@ -99,7 +97,7 @@ namespace ConorWoodFinalProject
 
         private void addToFavoritesButton_Click(object sender, RoutedEventArgs e)
         {
-            myController.AddWeather(weather);
+            myController.AddWeather(myController.Weather);
 
             locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites") { Source = myController });
         }
@@ -121,8 +119,10 @@ namespace ConorWoodFinalProject
             Weather currentWeather = new Weather();
             ForecastWeather forecastWeather = new ForecastWeather();
             currentWeather.Forecast = forecastWeather;
-            weather = currentWeather;
-            weather.ZipCode = newLocationTextBox.Text;
+            
+
+            myController.Weather = currentWeather;
+            myController.Weather.ZipCode = newLocationTextBox.Text;
 
             try
             {
@@ -138,36 +138,52 @@ namespace ConorWoodFinalProject
             }
 
 
-            CityTextBlock.Text = $"{currentWeather.CityName}, {currentWeather.Region}";
-            ConditionTextBlock.Text = currentWeather.WeatherCondition;
-            TempTextBlock.Text = $"{currentWeather.TempF} °F";
-            //rounded_border.Background = Brushes.DarkGray;
-            weather_icon.Source = currentWeather.Bitmap;
+            
+
+            CityTextBlock.Text = $"{myController.Weather.CityName}, {myController.Weather.Region}";
+            ConditionTextBlock.Text = myController.Weather.WeatherCondition;
+            TempTextBlock.Text = $"{myController.Weather.TempF} °F";
+
+            weather_icon.Source = myController.Weather.Bitmap;
 
 
-            Day1Text.Text = $"{forecastWeather.Days[0].day.maxtemp_f} °F";
-            Day2Text.Text = $"{forecastWeather.Days[1].day.maxtemp_f} °F";
-            Day3Text.Text = $"{forecastWeather.Days[2].day.maxtemp_f} °F";
+            
+
+            Day1Text.Text = $"{myController.Weather.Forecast.Days[0].day.maxtemp_f} °F";
+            Day2Text.Text = $"{myController.Weather.Forecast.Days[1].day.maxtemp_f} °F";
+            Day3Text.Text = $"{myController.Weather.Forecast.Days[2].day.maxtemp_f} °F";
 
 
-            Day1Icon.Source = forecastWeather.Icons[0];
-            Day2Icon.Source = forecastWeather.Icons[1];
-            Day3Icon.Source = forecastWeather.Icons[2];
+            
 
-            Date1.Text = forecastWeather.formattedDate(forecastWeather.Days[0]);
-            Date2.Text = forecastWeather.formattedDate(forecastWeather.Days[1]);
-            Date3.Text = forecastWeather.formattedDate(forecastWeather.Days[2]);
+            Day1Icon.Source = myController.Weather.Forecast.Icons[0];
+            Day2Icon.Source = myController.Weather.Forecast.Icons[1];
+            Day3Icon.Source = myController.Weather.Forecast.Icons[2];
+
+            
+
+            Date1.Text = myController.Weather.Forecast.formattedDate(myController.Weather.Forecast.Days[0]);
+            Date2.Text = myController.Weather.Forecast.formattedDate(myController.Weather.Forecast.Days[1]);
+            Date3.Text = myController.Weather.Forecast.formattedDate(myController.Weather.Forecast.Days[2]);
 
 
-            feelslikeText.Text = $"Feels Like: {currentWeather.Feelslike_temp} °F";
-            windText.Text = $"Wind: {currentWeather.Wind} MPH";
-            uvText.Text = $"UV Index: {currentWeather.UV}";
 
-            sunriseText.Text = $"Sunrise: {currentWeather.Astronomy.Sunrise}";
-            sunsetText.Text = $"Sunset: {currentWeather.Astronomy.Sunset}";
-            moonPhaseText.Text = $"Moon Phase: {currentWeather.Astronomy.MoonPhase}";
+            
 
-            setBackground(currentWeather);
+
+            feelslikeText.Text = $"Feels Like: {myController.Weather.Feelslike_temp} °F";
+            windText.Text = $"Wind: {myController.Weather.Wind} MPH";
+            uvText.Text = $"UV Index: {myController.Weather.UV}";
+
+            
+
+            sunriseText.Text = $"Sunrise: {myController.Weather.Astronomy.Sunrise}";
+            sunsetText.Text = $"Sunset: {myController.Weather.Astronomy.Sunset}";
+            moonPhaseText.Text = $"Moon Phase: {myController.Weather.Astronomy.MoonPhase}";
+
+
+            setBackground(myController.Weather);
+
 
 
             ForecastBorder.Visibility = Visibility.Visible;
