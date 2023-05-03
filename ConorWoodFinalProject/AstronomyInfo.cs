@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ConorWoodFinalProject
 {
+    /// <summary>
+    /// Represents astronomy objects and provides methods to retrieve data
+    /// </summary>
     [Serializable]
     public class AstronomyInfo
     {
@@ -51,6 +54,13 @@ namespace ConorWoodFinalProject
             key = "b06f9ec5e918401889a152444230604";
         }
 
+
+        /// <summary>
+        /// Uses HTTP Client to make an API call to astronomy endpoint. 
+        /// Parses JSON object and populates class members
+        /// </summary>
+        /// <param name="location"> Location to retrieve astronomy data for </param>
+        /// <returns> Task to await in calling function </returns>
         public async Task getAstroInfo(string location)
         {
             
@@ -69,6 +79,11 @@ namespace ConorWoodFinalProject
 
         }
 
+
+        /// <summary>
+        /// Format the current date into the proper format to use in endpoint call 
+        /// </summary>
+        /// <returns> Correctly formatted string </returns>
         private static string getCurrentDate()
         {
             DateTime currentDate = DateTime.Now;

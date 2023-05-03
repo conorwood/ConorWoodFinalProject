@@ -13,6 +13,9 @@ using System.Collections.ObjectModel;
 
 namespace ConorWoodFinalProject
 {
+    /// <summary>
+    /// Represents a current weather object. Contains method to retrieve appropriate data 
+    /// </summary>
     [Serializable]
     public class Weather
     {
@@ -156,20 +159,31 @@ namespace ConorWoodFinalProject
             }
         }
         
+        ///// <summary>
+        ///// Load a bitmap image from a 
+        ///// </summary>
+        ///// <param name="assetsRelativePath"></param>
+        ///// <param name="decodeWidth"></param>
+        ///// <returns></returns>
+        //protected virtual BitmapImage LoadBitmap(String assetsRelativePath, double decodeWidth)
+        //{
+        //    BitmapImage theBitmap = new BitmapImage();
+        //    theBitmap.BeginInit();
+        //    String basePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"assets\");
+        //    String path = System.IO.Path.Combine(basePath, assetsRelativePath);
+        //    theBitmap.UriSource = new Uri(path, UriKind.Absolute);
+        //    theBitmap.DecodePixelWidth = (int)decodeWidth;
+        //    theBitmap.EndInit();
 
-        protected virtual BitmapImage LoadBitmap(String assetsRelativePath, double decodeWidth)
-        {
-            BitmapImage theBitmap = new BitmapImage();
-            theBitmap.BeginInit();
-            String basePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"assets\");
-            String path = System.IO.Path.Combine(basePath, assetsRelativePath);
-            theBitmap.UriSource = new Uri(path, UriKind.Absolute);
-            theBitmap.DecodePixelWidth = (int)decodeWidth;
-            theBitmap.EndInit();
+        //    return theBitmap;
+        //}
 
-            return theBitmap;
-        }
 
+        /// <summary>
+        /// Loads a bitmap image from a given URL
+        /// </summary>
+        /// <param name="url"> URL to load image from </param>
+        /// <returns> Loaded BitmapImage </returns>
         protected BitmapImage LoadBitmapFromURl(String url) 
         {
             BitmapImage bitmapImage = new BitmapImage();
@@ -180,10 +194,17 @@ namespace ConorWoodFinalProject
             return bitmapImage;
         }
 
-        public virtual async Task getWeatherInfo(string zipCode)
+
+        /// <summary>
+        /// Uses HTTP Client to make an API call to current endpoint. 
+        /// Parses JSON object and populates class members
+        /// </summary>
+        /// <param name="location"> Location to retrieve weather data for </param>
+        /// <returns> Task to await in calling function </returns>
+        public virtual async Task getWeatherInfo(string location)
         {
             client = new();
-            var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/current.json?key={this.key}&q={zipCode}");
+            var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/current.json?key={this.key}&q={location}");
 
             rootObject = JsonSerializer.Deserialize<RootObject?>(json);
 

@@ -10,6 +10,9 @@ using System.Windows.Media.Imaging;
 
 namespace ConorWoodFinalProject
 {
+    /// <summary>
+    /// Inherits from Weather class. Contains additional information specific to forecast days, such as dates 
+    /// </summary>
     [Serializable]
     public class ForecastWeather : Weather 
     {
@@ -45,11 +48,16 @@ namespace ConorWoodFinalProject
         }
 
         
-
-        public override async Task getWeatherInfo(string zipCode)
+        /// <summary>
+        /// Uses HTTP Client to make an API call to forecast endpoint. 
+        /// Parses JSON object and populates class members
+        /// </summary>
+        /// <param name="location"> Location to retrieve weather data for </param>
+        /// <returns> Task to await in calling function </returns>
+        public override async Task getWeatherInfo(string location)
         {
             this.client = new();
-            var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/forecast.json?key={this.key}&q={zipCode}&days=3");
+            var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/forecast.json?key={this.key}&q={location}&days=3");
 
             forecastRoot = JsonSerializer.Deserialize<ForeCastRoot?>(json);
 
@@ -69,7 +77,12 @@ namespace ConorWoodFinalProject
             
         }
 
-
+        /// <summary>
+        /// Format date returned by JSON object from yyyy-MM-dd into M/d format for display 
+        /// </summary>
+        /// <param name="forecastDay"> Day to format date </param>
+        /// <returns> String with correctly formatted date </returns>
+        /// 
         public string formattedDate(ForecastDay forecastDay)
         {
             string input = forecastDay.date;

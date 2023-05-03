@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace ConorWoodFinalProject
 {
+    /// <summary>
+    /// Controller to implement MVC Architecture. 
+    /// Contains data for current weather 
+    /// </summary>
     [Serializable]
     class Controller
     {
@@ -32,18 +36,30 @@ namespace ConorWoodFinalProject
             set { weather = value; }
         }
 
-
+        /// <summary>
+        /// Adds a weather object to the ObservableCollection that is binded to the UI ListBox
+        /// Sorts collection by alphabetical order 
+        /// </summary>
+        /// <param name="weather"> Weather object to add</param>
         public void AddWeather(Weather weather)
         {
             favorites.Add(weather);
             favorites = new ObservableCollection<Weather>(favorites.OrderBy(x => x.CityName));
         }
 
+        /// <summary>
+        /// Removes a weather object from the ObservableCollection that is binded to the UI ListBox
+        /// </summary>
+        /// <param name="weather"> Weather object to remove </param>
         public void DeleteWeather(Weather weather)
         {
             favorites.Remove(weather);
         }
 
+
+        /// <summary>
+        /// Serializes the class state so that state persists when application is closed and opened 
+        /// </summary>
         public void SerializeData ()
         {
             string filePath = "favorites.dat";
@@ -55,6 +71,9 @@ namespace ConorWoodFinalProject
         }
 
 
+        /// <summary>
+        /// Deserializes the class state so that state persists when application is closed and opened 
+        /// </summary>
         public void DeserializeData ()
         {
             string filePath = "favorites.dat";

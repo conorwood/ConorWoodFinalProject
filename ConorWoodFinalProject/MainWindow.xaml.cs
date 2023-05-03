@@ -36,16 +36,15 @@ namespace ConorWoodFinalProject
 
         public MainWindow()
         {
+            // initialize window and controller
             InitializeComponent();
             myController = new Controller();
             DataContext = this.myController;
-
-           
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            // update UI elements with selected object
             Weather selectedWeather = (Weather)locations.SelectedItem;
             if (selectedWeather != null)
             {
@@ -55,16 +54,19 @@ namespace ConorWoodFinalProject
 
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         { 
+            // update UI elements
             updateWeatherDisplay(newLocationTextBox.Text); 
         }
 
         private void newLocationButton_Click(object sender, RoutedEventArgs e)
         {
+            // Show box to enter new location
             NewLocationBox.Visibility = Visibility.Visible;
         }
 
         private void addLocationButton_Click(object sender, RoutedEventArgs e)
         {
+            // update UI elements
             SubmitButton_Click(sender, e);
         }
 
@@ -74,18 +76,21 @@ namespace ConorWoodFinalProject
 
         private void setBackground(Weather w)
         {
+            // Create gradient background
             var gradientBrush = new LinearGradientBrush();
             gradientBrush.StartPoint = new Point(0, 0);
             gradientBrush.EndPoint = new Point(0, 1);
 
             if (w.IsDay == 0)
             {
+                // set dark background if it is night
                 gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(44, 44, 68), 0));
                 gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(128, 128, 128), 1));
             }
 
             else
             {
+                // set light background if it is day
                 gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(49, 113, 175), 0));
                 gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(128, 128, 128), 1));
             }
@@ -97,33 +102,41 @@ namespace ConorWoodFinalProject
 
         private void addToFavoritesButton_Click(object sender, RoutedEventArgs e)
         {
+            // add weather object
             myController.AddWeather(myController.Weather);
 
+            // Re establish binding so that UI udpdates
             locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites") { Source = myController });
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // save application state
             myController.SerializeData();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // restore application state
             myController.DeserializeData();
+            // restablish bindings 
             locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites") { Source = myController });
         }
 
 
         private async void updateWeatherDisplay(string location)
         {
+
+            // create new object 
             Weather currentWeather = new Weather();
             ForecastWeather forecastWeather = new ForecastWeather();
             currentWeather.Forecast = forecastWeather;
             
-
+            // update controller class 
             myController.Weather = currentWeather;
             myController.Weather.ZipCode = newLocationTextBox.Text;
 
+            // try to retrieve updated data 
             try
             {
                 await currentWeather.getWeatherInfo(location);
@@ -139,7 +152,7 @@ namespace ConorWoodFinalProject
 
 
             
-
+            // update UI elements 
             CityTextBlock.Text = $"{myController.Weather.CityName}, {myController.Weather.Region}";
             ConditionTextBlock.Text = myController.Weather.WeatherCondition;
             TempTextBlock.Text = $"{myController.Weather.TempF} °F";
@@ -193,12 +206,12 @@ namespace ConorWoodFinalProject
 
         private void deleteLocationButton_Click(object sender, RoutedEventArgs e)
         {
+            // Delete selected weather object 
             Weather selectedWeather = (Weather)locations.SelectedItem;
             myController.DeleteWeather(selectedWeather);
             
         }
-
-         
+   
 
     }
 }
