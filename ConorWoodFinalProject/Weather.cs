@@ -44,7 +44,7 @@ namespace ConorWoodFinalProject
         public Weather() 
         {
             rootObject = new RootObject();
-            key = "b06f9ec5e918401889a152444230604";
+            key = "b06f9ec5e918401889a152444230604"; // API Key
             astronomy= new AstronomyInfo();
         }
 
@@ -158,25 +158,6 @@ namespace ConorWoodFinalProject
                 return this.bitmap;
             }
         }
-        
-        ///// <summary>
-        ///// Load a bitmap image from a 
-        ///// </summary>
-        ///// <param name="assetsRelativePath"></param>
-        ///// <param name="decodeWidth"></param>
-        ///// <returns></returns>
-        //protected virtual BitmapImage LoadBitmap(String assetsRelativePath, double decodeWidth)
-        //{
-        //    BitmapImage theBitmap = new BitmapImage();
-        //    theBitmap.BeginInit();
-        //    String basePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"assets\");
-        //    String path = System.IO.Path.Combine(basePath, assetsRelativePath);
-        //    theBitmap.UriSource = new Uri(path, UriKind.Absolute);
-        //    theBitmap.DecodePixelWidth = (int)decodeWidth;
-        //    theBitmap.EndInit();
-
-        //    return theBitmap;
-        //}
 
 
         /// <summary>
@@ -204,10 +185,11 @@ namespace ConorWoodFinalProject
         public virtual async Task getWeatherInfo(string location)
         {
             client = new();
+            // call endpoint and parse
             var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/current.json?key={this.key}&q={location}");
-
             rootObject = JsonSerializer.Deserialize<RootObject?>(json);
 
+            // set the object properties
             this.cityName = rootObject?.location?.name;
             this.weatherCondition = rootObject?.current?.condition?.text;
             this.tempF = rootObject?.current?.temp_f.ToString();

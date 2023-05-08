@@ -36,6 +36,19 @@ namespace ConorWoodFinalProject
             set { weather = value; }
         }
 
+        public bool CheckWeatherInFavorites(Weather weather)
+        {
+            foreach (var v in favorites)
+            {
+                if (v.CityName == weather.CityName && v.Region == weather.Region)
+                {
+                    return true; 
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Adds a weather object to the ObservableCollection that is binded to the UI ListBox
         /// Sorts collection by alphabetical order 

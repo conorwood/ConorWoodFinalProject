@@ -112,13 +112,29 @@ namespace ConorWoodFinalProject
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // save application state
-            myController.SerializeData();
+            try
+            {
+                myController.SerializeData();
+            }
+
+            catch
+            {
+                MessageBox.Show("Warning. Error saving data");
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // restore application state
-            myController.DeserializeData();
+            try
+            {
+                myController.DeserializeData();
+            }
+
+            catch 
+            {
+                MessageBox.Show("Warning. Error restoring data");
+            }
             // restablish bindings 
             locations.SetBinding(ListBox.ItemsSourceProperty, new Binding("favorites") { Source = myController });
         }
@@ -153,6 +169,16 @@ namespace ConorWoodFinalProject
 
             
             // update UI elements 
+            if (myController.CheckWeatherInFavorites(currentWeather) == true)
+            {
+                addToFavoritesButton.Visibility = Visibility.Collapsed;
+            }
+
+            else
+            {
+                addToFavoritesButton.Visibility = Visibility.Visible;
+            }
+
             CityTextBlock.Text = $"{myController.Weather.CityName}, {myController.Weather.Region}";
             ConditionTextBlock.Text = myController.Weather.WeatherCondition;
             TempTextBlock.Text = $"{myController.Weather.TempF} °F";

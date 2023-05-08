@@ -68,11 +68,13 @@ namespace ConorWoodFinalProject
 
             HttpClient client = new();
 
+            // call and endpoint, parse JSON
             var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/astronomy.json?key={this.key}&q={location}&dt={dt}");
             astronomyResponse = JsonSerializer.Deserialize<AstronomyResponse?>(json);
 
             Astro astro = astronomyResponse.astronomy.astro;
 
+            // set object properties
             this.sunrise = astro.sunrise;
             this.sunset = astro.sunset;
             this.moon_phase = astro.moon_phase;

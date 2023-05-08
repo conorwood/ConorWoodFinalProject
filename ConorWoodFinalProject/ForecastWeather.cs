@@ -57,11 +57,11 @@ namespace ConorWoodFinalProject
         public override async Task getWeatherInfo(string location)
         {
             this.client = new();
+            // call endpoint and parse JSON
             var json = await client.GetStringAsync($"http://api.weatherapi.com/v1/forecast.json?key={this.key}&q={location}&days=3");
-
             forecastRoot = JsonSerializer.Deserialize<ForeCastRoot?>(json);
 
-
+            // set object properties
             this.cityName = forecastRoot.location.name;
             this.days = forecastRoot.forecast.forecastday;
 
